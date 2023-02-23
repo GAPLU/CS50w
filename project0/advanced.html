@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link href="styling.css" rel="stylesheet">
+        <title>Search</title>
+    </head>
+    <body>
+        <div class="change-page">
+            <a href="index.html" class="btn btn-info" role="button">Google Search</a>
+        </div>
+        
+        <form id="advanced" action="https://www.google.com/search">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>all these words:</td>
+                        <td><input class="ad_search" type="text" name="as_q"></td>
+                        <td>Type the important words: <b>tri-colour rat terrier</b></td>
+                    </tr>
+                    <tr>
+                        <td>this exact word or phrase:</td>
+                        <td><input class="ad_search" type="text" name="as_epq"></td>
+                        <td>Put exact words in quotes: <b>"rat terrier"</b></td>
+                    </tr>
+                    <tr>
+                        <td>any of these words:</td>
+                        <td><input class="ad_search" type="text" name="as_oq"></td>
+                        <td>Type OR between all the words you want: <b>miniature OR standard</b></td>
+                    </tr>
+                    <tr>
+                        <td>none of these words:</td>
+                        <td><input class="ad_search" type="text" name="as_eq"></td>
+                        <td>Put a minus sign just before words that you don't want: <b>-rodent, -"Jack Russell"</b></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div id="adv_btn"><button type="submit" class="btn btn-primary">Advanced Search</button></div>
+        </form>
+    </body>
+</html>

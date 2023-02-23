@@ -1,0 +1,49 @@
+.change-page {
+    text-align: right;
+    margin: 10px;
+}
+
+form {
+    text-align: center;
+    margin-top: 275px;
+}
+
+.search {
+    height: 50px;
+    width: 500px;
+    padding: 6px;
+    margin: 10px;
+    margin-bottom: 25px;
+    border-radius: 25px;
+    border-color:dimgrey;
+}
+
+.ad_search {
+    height: 30px;
+    width: 500px;
+    padding: 6px;
+    margin: 15px;
+    margin-right: 25px;
+    border-color: dimgrey;
+}
+
+td {
+    text-align: left;
+}
+
+table {
+    margin-left: 15px;
+}
+
+#adv_btn {
+    text-align: left;
+    margin-left: 553px;
+}
+
+#search {
+    margin-right: 10px;
+}
+
+#advanced {
+    margin-top: 100px;
+}
