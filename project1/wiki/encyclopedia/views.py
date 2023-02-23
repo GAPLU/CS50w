@@ -64,7 +64,7 @@ def new_page(request):
             "message": "Article already exists"
             })
         content = request.POST.get("page_content")
-        if content.strip():
+        if content.strip() and title.strip():
             util.save_entry(title, content)
             return entry(request, title)
         else:
