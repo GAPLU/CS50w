@@ -2,13 +2,13 @@
 
 {% block body %}
     <h2>Listing: {{ listing.title }}</h2>
-    {% if listing.in_watchlist %}
+    {% if watchlist %}
         <form method="POST" action="{% url 'listing' listing_id=listing.id %}">
             {% csrf_token %}
             <input type="hidden" value="smth" name="watchlist_add">
             <button type="submit" class="btn btn-primary">Remove from Watchlist</button>
         </form>
-    {% else %}
+    {% elif not watchlist %}
         <form method="POST" action="{% url 'listing' listing_id=listing.id %}">
             {% csrf_token %}
             <input type="hidden" value="smth" name="watchlist_remove">

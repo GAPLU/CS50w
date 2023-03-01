@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User, Listing, Bid, Comments
+from .models import User, Listing, Bid, Comments, Watchlist
 from .forms import ListingForm, Comment
 
 
@@ -94,13 +94,17 @@ def create_listing(request):
 def listing(request, listing_id):
     form = Comment()                
     listing = Listing.objects.get(pk=listing_id)
-    comments = listing.comments.all()
+    comments = reversed(listing.comments.all())
+    in_watchlist = Watchlist.objects.filter(user=request.user, listing=listing)
     if request.method == "POST":
         if request.POST.get("watchlist_add") or request.POST.get("watchlist_remove"):
-            listing.toggle_watchlist_state()
+            Watchlist.toggle(listing=listing, user=request.user)
+            in_watchlist = Watchlist.objects.filter(user=request.user, listing=listing)
             return render(request, "auctions/listing.html", {
+                "form": form,
                 "listing": listing,
-                "comments": comments
+                "comments": comments,
+                "watchlist": in_watchlist
             })
 
         elif request.POST.get("new_bid"):
@@ -111,13 +115,17 @@ def listing(request, listing_id):
                 listing.starting_bid = bid
                 listing.save()
                 return render(request, "auctions/listing.html", {
+                    "form": form,
                     "listing": listing,
-                    "comments": comments
+                    "comments": comments,
+                    "watchlist": in_watchlist
                 })
             else:
                 return render(request, "auctions/listing.html", {
+                    "form": form,
                     "listing": listing,
                     "comments": comments,
+                    "watchlist": in_watchlist,
                     "error_message": "Bid must be greater than current bid"
                 })
             
@@ -133,20 +141,30 @@ def listing(request, listing_id):
                 text = filled_form.cleaned_data['comment']
                 comment = Comments(comment=text, listing=listing, user=request.user)
                 comment.save()
-                comments = listing.comments.all()
+                comments = reversed(listing.comments.all())
                 return render(request, "auctions/listing.html", {
                     "form": form,
                     "listing": listing,
-                    "comments": comments
+                    "comments": comments,
+                    "watchlist": in_watchlist
                 })
 
     else:              
         return render(request, "auctions/listing.html", {
             "listing": listing,
             "form": form,
-            "comments": comments
+            "comments": comments,
+            "watchlist": in_watchlist
         })
 
 
+def watchlist(request):
+    return render(request, "auctions/watchlist.html", {
+        "watchlist": Watchlist.objects.filter(user=request.user)
+    })
 
 
+def categories(request):
+    return render(request, "auctions/categories.html", {
+        "categories": "pass" 
+    })
