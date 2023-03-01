@@ -64,19 +64,20 @@
             </form>
         {% endif %}
         <hr>
+        <h4><b>Comments section</b></h4>
+        <br> 
         <form method="POST" action="{% url 'listing' listing_id=listing.id %}">
             {% csrf_token %}
             <input type="hidden" value="smth" name="add_comment">
             {{ form }}
             <button type="submit" class="btn btn-primary">Add Comment</button>
         </form>
+        <br>
         {% for comment in comments %}
         <div class="listing">
-            <img src="{{ listing.image_url }}">
             <div class="listing-info">
-                <a href="{% url 'listing' listing_id=listing.id %}"><h3>{{ comment.comment }}</h3></a><br>
-                <p><b>Price: </b>{{ co }}$</p>
-                <p><h6>{{ listing.description }}</h6></p>
+                User: <b>{{ request.user }}</b><br>
+                <p>Comment: <i>{{ comment.comment }}</i></p>
             </div>
         </div>  
         {% endfor %}

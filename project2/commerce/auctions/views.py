@@ -92,6 +92,7 @@ def create_listing(request):
 
 @login_required
 def listing(request, listing_id):
+    form = Comment()                
     listing = Listing.objects.get(pk=listing_id)
     comments = listing.comments.all()
     if request.method == "POST":
@@ -126,18 +127,20 @@ def listing(request, listing_id):
             return HttpResponseRedirect(reverse("index"))
         
         elif request.POST.get("add_comment"):
-            form = ListingForm(request.POST)
-            if form.is_valid():
-                text = form.cleaned_data['title']
+            filled_form = Comment(request.POST)
+            if filled_form.is_valid():
+                print("asdgadfgdafdsafdsasfd")
+                text = filled_form.cleaned_data['comment']
                 comment = Comments(comment=text, listing=listing, user=request.user)
                 comment.save()
+                comments = listing.comments.all()
                 return render(request, "auctions/listing.html", {
+                    "form": form,
                     "listing": listing,
                     "comments": comments
                 })
 
-    else:
-        form = Comment()                
+    else:              
         return render(request, "auctions/listing.html", {
             "listing": listing,
             "form": form,
