@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User, Listing, Bid, Comments, Watchlist
+from .models import User, Listing, Bid, Comments, Watchlist, Category
 from .forms import ListingForm, Comment
 
 
@@ -78,8 +78,16 @@ def create_listing(request):
             url = form.cleaned_data['image_url']
             category = form.cleaned_data['category']
             if not url:
-                url = "static/auctions/no-image.png"
-            listing = Listing(title=title, description=description, starting_bid=bid, image_url=url, category=category, creator=request.user)
+                url = "/static/auctions/without-image.png"
+            category = category.strip().lower().capitalize()
+            if category:
+                new_category = Category.objects.filter(category=category).first()
+                if not new_category:
+                    new_category = Category(category=category)
+                    new_category.save()
+                listing = Listing(title=title, description=description, starting_bid=bid, image_url=url, category=new_category, creator=request.user)
+            else:
+                listing = Listing(title=title, description=description, starting_bid=bid, image_url=url, creator=request.user)
             listing.save()
             return HttpResponseRedirect(reverse("index"))
             
@@ -137,7 +145,6 @@ def listing(request, listing_id):
         elif request.POST.get("add_comment"):
             filled_form = Comment(request.POST)
             if filled_form.is_valid():
-                print("asdgadfgdafdsafdsasfd")
                 text = filled_form.cleaned_data['comment']
                 comment = Comments(comment=text, listing=listing, user=request.user)
                 comment.save()
@@ -166,5 +173,13 @@ def watchlist(request):
 
 def categories(request):
     return render(request, "auctions/categories.html", {
-        "categories": "pass" 
+        "categories": Category.objects.all()
+    })
+
+
+def category(request, category):
+    category_obj = Category.objects.filter(category=category).first() 
+    listings = category_obj.listings.all()
+    return render(request, "auctions/in_category.html", {
+        "listings": listings 
     })

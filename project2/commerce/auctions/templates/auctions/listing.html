@@ -17,14 +17,9 @@
     {% endif %}
     <hr>
     <div style="padding-left: 15px;">
-        {% if "http" not in listing.image_url %}
-            <img style="max-height: 500;" src="/{{ listing.image_url }}">
-        {% else %}
-            <img style="max-height: 500;" src="{{ listing.image_url }}" alt="Remote image">
-        {% endif %}
+        <img style="max-height: 500;" src="{{ listing.image_url }}">
         <div>
             <p style="font-size: 32px;">{{ listing.description }}</p>
-            <p style="font-size: 20px;">Category: <b>{{ listing.category }}</b></p>
             <p style="font-size: 32px;"><b>${{ listing.starting_bid }}.00</b></p>
             {% if not listing.winner %}
             <form method="POST" action="{% url 'listing' listing_id=listing.id %}">
