@@ -1,0 +1,35 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Create Listing</h2>
+    
+    <form action="create_listing" method="post">
+        {% csrf_token %}
+        <div>
+            {{ form.title.label_tag }}
+            {{ form.title }}
+          </div>
+          <hr>
+          <div>
+            {{ form.description.label_tag }}
+            {{ form.description }}
+          </div>
+          <hr>
+          <div>
+            {{ form.starting_bid.label_tag }}
+            {{ form.starting_bid }}
+          </div>
+          <hr>
+          <div>
+            {{ form.image_url.label_tag }}
+            {{ form.image_url }}
+          </div>
+          <hr>
+          <div>
+            {{ form.category.label_tag }}
+            {{ form.category }}
+          </div>
+          <br>
+        <input type="submit" value="Create Listing">
+    </form>
+{% endblock %}
