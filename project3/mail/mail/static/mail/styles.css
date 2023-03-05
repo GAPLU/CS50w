@@ -2,7 +2,33 @@ textarea {
     min-height: 400px;
 }
 
-#emails-view div {
+#emails-view .single-mail {
     border: 1px solid black;
+    text-indent: 5px;
+    padding: 10px;
 }
 
+
+.single-mail .email-sender,
+.single-mail .email-subject,
+.single-mail .email-timestamp {
+    display: inline-block;
+}
+
+.single-mail .email-subject {
+    margin-left: 40px;
+}
+
+.single-mail .email-timestamp {
+    float: right;
+}
+
+.email-buttons {
+    display: flex;
+    align-items: center;
+  }
+
+.email-buttons button {
+    margin-right: 5px;
+  }
+  
