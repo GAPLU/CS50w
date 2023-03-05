@@ -71,7 +71,7 @@
         {% for comment in comments %}
         <div class="listing">
             <div class="listing-info">
-                User: <b>{{ request.user }}</b><br>
+                User: <b>{{ comment.user }}</b><br>
                 <p>Comment: <i>{{ comment.comment }}</i></p>
             </div>
         </div>  
