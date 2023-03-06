@@ -1,0 +1,12 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+    <h1>All Posts</h1>
+    <div id="new-post-form">
+        <h4>New Post</h4>
+        <form>
+            <textarea class="form-control" rows="4" id="comment"></textarea>
+            <button type="submit" class="btn btn-primary">Post</button>
+        </form>
+    </div>
+{% endblock %}

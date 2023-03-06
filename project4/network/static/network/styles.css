@@ -1,0 +1,13 @@
+body {
+    margin: 10px;
+}
+
+#new-post-form {
+    border: 1px solid LightGray;
+    padding: 20px;
+}
+
+.form-control {
+    margin-bottom: 5px;
+}
+
