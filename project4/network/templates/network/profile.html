@@ -1,0 +1,27 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+    <div id="user_profile">
+        <h1><b id="profile_username">{{ UserProfile.username }}</b></h1>
+        <div class="follow"><b>{{ following }} </b><span>Following</span></div>
+        <div class="follow"><b>{{ followers }} </b><span>Followers</span></div>
+        {% if UserProfile != request.user %}
+            <div>
+                <form id="my-form" method="PUT">
+                    {% csrf_token %}
+                    <button id="to-follow" class="btn btn-primary">Follow</button>
+                    <button id="to-unfollow" class="btn btn-primary">Unfollow</button>
+                </form>
+            </div>
+        {% endif %}
+    </div>
+    <hr>
+    <div id="user-posts">
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'network/profile.js' %}"></script>
+{% endblock %}

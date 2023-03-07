@@ -1,10 +1,11 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
+import json
 
-from .models import User
+from .models import User, Post
 
 
 def index(request):
@@ -61,3 +62,57 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+    
+
+def create_post(request):
+
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required."}, status=400)
+    
+    data = json.loads(request.body)
+    body = data.get("body", "")
+    post = Post(body=body, user=request.user)
+    post.save()
+
+    return JsonResponse({"message": "Posted successfully."}, status=201)
+
+
+def all_posts(request):
+
+    posts = Post.objects.all()
+    posts = posts.order_by("-timestamp").all()
+    posts_list = [post.serialize() for post in posts]
+    return JsonResponse(posts_list, safe=False)
+
+
+def user_profile(request, username):
+
+    user_req = User.objects.get(username=request.user.username)
+    user = User.objects.get(username=username)  
+
+    if request.method == "GET": 
+        following = len(user.following.all())
+        followers = len(user.followers.all())
+        return render(request, "network/profile.html", {
+            "UserProfile": user,
+            "following": following,
+            "followers": followers
+        })
+    elif request.method == "PUT":
+        data = json.loads(request.body)
+        if data.get("following") == "follow":
+            user_req.following.add(user)
+        elif data.get("following") == "unfollow":
+            user_req.following.remove(user)
+        user.save()
+        return HttpResponse(status=204)
+
+
+def user_posts(request, username):
+
+    user = User.objects.get(username=username)
+    posts = user.posts.all()
+    posts = posts.order_by("-timestamp").all()
+    posts_list = [post.serialize() for post in posts]
+    return JsonResponse(posts_list, safe=False)
+

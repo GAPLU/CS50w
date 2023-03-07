@@ -2,12 +2,48 @@ body {
     margin: 10px;
 }
 
-#new-post-form {
+#new-post {
     border: 1px solid LightGray;
     padding: 20px;
+    margin-bottom: 10px;
+    border-radius: 5px;
 }
 
 .form-control {
     margin-bottom: 5px;
 }
 
+.single-post {
+    border: 1px solid lightGray;
+    text-indent: 5px;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.post-timestamp {
+    color: gray;
+    font-size: 0.8em;
+}
+
+.follow span{
+    color: gray;
+}
+
+.post-sender {
+    margin-bottom: 10px;
+}
+
+#user_profile {
+    text-align: center;
+    font-size: 30px;
+}
+
+.follow {
+    display: inline-block;
+}
+
+#user-posts {
+    max-width: 800px;
+    margin: 0 auto;
+}
