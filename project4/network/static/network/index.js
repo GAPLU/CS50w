@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function (){
         document.querySelector('#new-post-form').addEventListener('submit', post);
     } 
 
-    load_index('index');
+    load_index();
 
 });
 
@@ -33,7 +33,7 @@ function post(event) {
 }
 
 
-function load_index(postbox) {
+function load_index() {
 
     document.querySelector('#posts-view').style.display = 'block'
 

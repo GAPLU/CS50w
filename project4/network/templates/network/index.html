@@ -3,7 +3,7 @@
 
 {% block body %}
     <div id="posts-view">
-        <h1>All Posts</h1>
+        <h1 id="post-title">All Posts</h1>
         {% if user.is_authenticated %}
             <div id="new-post">
                 <h4>New Post</h4>
@@ -17,9 +17,8 @@
         
         <div id="all-posts">
         </div>
+
     </div>
-
-
 
 {% endblock %}
 

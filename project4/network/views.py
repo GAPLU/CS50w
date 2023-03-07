@@ -115,10 +115,22 @@ def user_profile(request, username):
     
 
 def user_posts(request, username):
-
     user = User.objects.get(username=username)
     posts = user.posts.all()
     posts = posts.order_by("-timestamp").all()
     posts_list = [post.serialize() for post in posts]
     return JsonResponse(posts_list, safe=False)
 
+
+def following_posts(request):
+    
+    user = User.objects.get(id=request.user.id)
+    following = user.following.all()
+    posts = Post.objects.filter(user__in=following).order_by("-timestamp")
+    posts_list = [post.serialize() for post in posts]
+    return JsonResponse(posts_list, safe=False)
+
+
+def following(request):
+
+    return render(request, "network/following.html")
