@@ -1,16 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-
-    const tofollow = document.querySelector('#to-follow');
-    const tounfollow = document.querySelector('#to-unfollow');
-    if (tofollow) {
-        document.querySelector('#to-follow').addEventListener('click', () => follow_toggle("follow"))
-    } 
-
-    if (tounfollow) {
-        document.querySelector('#to-unfollow').addEventListener('click', () => follow_toggle("unfollow"))
-    }
-
     load_posts();
 
 });
@@ -36,37 +25,4 @@ function load_posts() {
     });
 
 
-}
-
-
-function follow_toggle(todo) {
-    
-    const username = document.querySelector('#profile_username').innerHTML
-
-    if (todo === "follow") {
-        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-        fetch(`/users/${username}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrftoken,
-            },
-            body: JSON.stringify({
-                following: "follow"
-            })
-        })
-    }
-    else if (todo === "unfollow") {
-        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-        fetch(`/users/${username}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrftoken,
-            },
-            body: JSON.stringify({
-                following: "unfollow"
-            })
-        })
-    }
 }

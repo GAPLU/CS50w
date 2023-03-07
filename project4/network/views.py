@@ -87,26 +87,32 @@ def all_posts(request):
 
 def user_profile(request, username):
 
-    user_req = User.objects.get(username=request.user.username)
     user = User.objects.get(username=username)  
+    state=''
+    user_req = User.objects.get(username=request.user)
 
-    if request.method == "GET": 
-        following = len(user.following.all())
-        followers = len(user.followers.all())
-        return render(request, "network/profile.html", {
-            "UserProfile": user,
-            "following": following,
-            "followers": followers
-        })
-    elif request.method == "PUT":
-        data = json.loads(request.body)
-        if data.get("following") == "follow":
-            user_req.following.add(user)
-        elif data.get("following") == "unfollow":
+    if request.method == "POST":
+        if "to-follow" in request.POST:
+            if not user in user_req.following.all():
+                user_req.following.add(user)
+        elif "to-unfollow" in request.POST:
             user_req.following.remove(user)
-        user.save()
-        return HttpResponse(status=204)
+    
+    following = user.following.count()
+    followers = user.followers.count()
+    if user in user_req.following.all():
+        state = 'following'
+    else:
+        state = 'not_following'
 
+
+    return render(request, "network/profile.html", {
+        "UserProfile": user,
+        "following": following,
+        "followers": followers,
+        "state": state
+    })
+    
 
 def user_posts(request, username):
 

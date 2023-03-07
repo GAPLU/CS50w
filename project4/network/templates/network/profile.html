@@ -6,12 +6,15 @@
         <h1><b id="profile_username">{{ UserProfile.username }}</b></h1>
         <div class="follow"><b>{{ following }} </b><span>Following</span></div>
         <div class="follow"><b>{{ followers }} </b><span>Followers</span></div>
-        {% if UserProfile != request.user %}
+        {% if user.is_authenticated and UserProfile != request.user %}
             <div>
-                <form id="my-form" method="PUT">
+                <form id="my-form" method="POST" action="{% url 'user_profile' username=UserProfile.username %}">
                     {% csrf_token %}
-                    <button id="to-follow" class="btn btn-primary">Follow</button>
-                    <button id="to-unfollow" class="btn btn-primary">Unfollow</button>
+                    {% if state == "following" %}
+                        <input type="submit" id="to-unfollow" value="Unfollow" name="to-unfollow" class="btn btn-primary">
+                    {% elif state == "not_following" %}
+                        <input type="submit" id="to-follow" value="Follow" name="to-follow" class="btn btn-primary">
+                    {% endif %}
                 </form>
             </div>
         {% endif %}
