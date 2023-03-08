@@ -5,7 +5,10 @@ document.addEventListener('DOMContentLoaded', function (){
         document.querySelector('#new-post-form').addEventListener('submit', post);
     } 
 
-
+    const editButtons = document.querySelectorAll('.edit');
+    editButtons.forEach(button => {
+        button.addEventListener('click', () => edit(button));
+    });
 });
 
 function post(event) {
@@ -30,3 +33,51 @@ function post(event) {
     });
 
 }
+
+
+function edit(button) {
+
+    const postId = button.dataset.postid;
+    const postBody = button.nextElementSibling;
+    const textarea = document.createElement('textarea');
+    textarea.classList.add('post-textarea');
+    textarea.value = postBody.textContent;
+    postBody.replaceWith(textarea);
+
+    const saveBtn = document.createElement('button');
+    saveBtn.classList.add('edit', 'btn', 'btn-sm', 'btn-outline-primary');
+    saveBtn.setAttribute('id', 'edit-save');
+    saveBtn.setAttribute('data-postid', postId);
+    saveBtn.textContent = 'Save';
+    button.replaceWith(saveBtn)
+
+    saveBtn.addEventListener('click', () => save(button, saveBtn, postId, textarea, postBody))
+
+
+}
+
+
+function save(editBtn, saveBtn, postId, textarea, postBody) {
+
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    postBody.textContent = textarea.value;
+    fetch('/update_post', {
+        method: 'POST', 
+        body: JSON.stringify({
+            body: textarea.value,
+            id: postId
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+        }
+    })
+    .then(response => response.json())
+    .then(() => {
+        saveBtn.replaceWith(editBtn)
+        textarea.replaceWith(postBody)
+    });
+
+}
+
+

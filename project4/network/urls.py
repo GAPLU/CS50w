@@ -12,5 +12,6 @@ urlpatterns = [
     path("following", views.index, name="following"),
 
     # API Routes
-    path("create_post", views.create_post, name="create_post")
+    path("create_post", views.create_post, name="create_post"),
+    path("update_post", views.update_post, name="update_post"),
 ]

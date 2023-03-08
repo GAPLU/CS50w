@@ -143,3 +143,17 @@ def user_profile(request, username):
         "posts": posts
     })
     
+
+def update_post(request):
+
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required."}, status=400)
+    
+    data = json.loads(request.body)
+    body = data.get("body", "")
+    id = data.get("id", "")
+    print(id)
+    print(body)
+    Post.objects.filter(id=id).update(body=body)
+
+    return JsonResponse({"message": "Posted successfully."}, status=201)
