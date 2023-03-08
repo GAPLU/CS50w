@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
+from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
@@ -9,7 +10,16 @@ from .models import User, Post
 
 
 def index(request):
-    return render(request, "network/index.html")
+    
+    posts = Post.objects.all()
+    posts = posts.order_by("-timestamp").all()
+    posts_list = [post.serialize() for post in posts]
+    p = Paginator(posts_list, 10)
+    page = request.GET.get('page')
+    posts = p.get_page(page)
+    return render(request, "network/index.html", {
+        "posts": posts
+    })
 
 
 def login_view(request):
@@ -90,6 +100,12 @@ def user_profile(request, username):
     user = User.objects.get(username=username)  
     state=''
     user_req = User.objects.get(username=request.user)
+    posts = user.posts.all()
+    posts = posts.order_by("-timestamp").all()
+    posts_list = [post.serialize() for post in posts]
+    p = Paginator(posts_list, 10)
+    page = request.GET.get('page')
+    posts = p.get_page(page)
 
     if request.method == "POST":
         if "to-follow" in request.POST:
@@ -110,17 +126,23 @@ def user_profile(request, username):
         "UserProfile": user,
         "following": following,
         "followers": followers,
-        "state": state
+        "state": state,
+        "posts": posts
     })
     
 
 def user_posts(request, username):
+
     user = User.objects.get(username=username)
     posts = user.posts.all()
     posts = posts.order_by("-timestamp").all()
     posts_list = [post.serialize() for post in posts]
-    return JsonResponse(posts_list, safe=False)
-
+    p = Paginator(posts_list, 10)
+    page = request.GET.get('page')
+    posts = p.get_page(page)
+    return render(request, "network/profile.html", {
+        "posts": posts
+    })
 
 def following_posts(request):
     
@@ -133,4 +155,13 @@ def following_posts(request):
 
 def following(request):
 
-    return render(request, "network/following.html")
+    user = User.objects.get(id=request.user.id)
+    following = user.following.all()
+    posts = Post.objects.filter(user__in=following).order_by("-timestamp")
+    posts_list = [post.serialize() for post in posts]
+    p = Paginator(posts_list, 10)
+    page = request.GET.get('page')
+    posts = p.get_page(page)
+    return render(request, "network/following.html", {
+        "posts": posts
+    })
