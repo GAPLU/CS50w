@@ -1,7 +1,8 @@
-{% extends "network/layout.html" %}
+{% extends "network/layout_pages.html" %}
 {% load static %}
 
 {% block body %}
+
     <div id="user_profile">
         <h1><b id="profile_username">{{ UserProfile.username }}</b></h1>
         <div class="follow"><b>{{ following }} </b><span>Following</span></div>
@@ -20,33 +21,6 @@
         {% endif %}
     </div>
     <hr>
-    <div id="user-posts">
-        {% for post in posts %}
-            <div class="single-post">
-                <div class="post-sender"><h5><b>{{post.user}}</b></h5></div>
-                <div class="post-body">{{post.body}}</div>
-                <div class="post-timestamp"><span>{{post.timestamp}}</span></div>
-                <div class="likes">{{post.likes}}</div>
-            </div>
-        {% endfor %}
-    </div>
-
-
-    <nav>
-        <ul class="pagination justify-content-center">
-            {% if posts.has_previous %}
-                <li class="page-item"><a class="page-link" href="?page={{ posts.previous_page_number }}">Previous</a></li>
-            {% endif %}
-
-            {% if posts.paginator.num_pages > 1 %}
-            <li class="page-item disabled"><a class="page-link" href="#">Page {{ posts.number }} of {{ posts.paginator.num_pages }}</a></li>
-            {% endif %}
-
-            {% if posts.has_next %}
-                <li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number }}">Next</a></li>
-            {% endif %}
-        </ul>
-    </nav>
 
 {% endblock %}
 

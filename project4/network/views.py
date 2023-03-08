@@ -4,22 +4,43 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
+from django.urls import resolve
 import json
 
 from .models import User, Post
 
 
-def index(request):
-    
-    posts = Post.objects.all()
+def posts_conf(request, type, template):
+
+    if type == "index":
+        posts = Post.objects.all()
+
+    elif type == "following":
+        user = User.objects.get(id=request.user.id)
+        following = user.following.all()
+        posts = Post.objects.filter(user__in=following)
+
+
     posts = posts.order_by("-timestamp").all()
     posts_list = [post.serialize() for post in posts]
     p = Paginator(posts_list, 10)
     page = request.GET.get('page')
     posts = p.get_page(page)
-    return render(request, "network/index.html", {
+    return render(request, f"network/{template}.html", {
         "posts": posts
     })
+    
+
+def index(request):
+
+    view_name = resolve(request.path_info).url_name
+
+    if view_name == "index":
+        return posts_conf(request, "index", "index")
+ 
+    elif view_name == "following":
+        return posts_conf(request, "following", "index")
+    
 
 
 def login_view(request):
@@ -87,14 +108,6 @@ def create_post(request):
     return JsonResponse({"message": "Posted successfully."}, status=201)
 
 
-def all_posts(request):
-
-    posts = Post.objects.all()
-    posts = posts.order_by("-timestamp").all()
-    posts_list = [post.serialize() for post in posts]
-    return JsonResponse(posts_list, safe=False)
-
-
 def user_profile(request, username):
 
     user = User.objects.get(username=username)  
@@ -130,38 +143,3 @@ def user_profile(request, username):
         "posts": posts
     })
     
-
-def user_posts(request, username):
-
-    user = User.objects.get(username=username)
-    posts = user.posts.all()
-    posts = posts.order_by("-timestamp").all()
-    posts_list = [post.serialize() for post in posts]
-    p = Paginator(posts_list, 10)
-    page = request.GET.get('page')
-    posts = p.get_page(page)
-    return render(request, "network/profile.html", {
-        "posts": posts
-    })
-
-def following_posts(request):
-    
-    user = User.objects.get(id=request.user.id)
-    following = user.following.all()
-    posts = Post.objects.filter(user__in=following).order_by("-timestamp")
-    posts_list = [post.serialize() for post in posts]
-    return JsonResponse(posts_list, safe=False)
-
-
-def following(request):
-
-    user = User.objects.get(id=request.user.id)
-    following = user.following.all()
-    posts = Post.objects.filter(user__in=following).order_by("-timestamp")
-    posts_list = [post.serialize() for post in posts]
-    p = Paginator(posts_list, 10)
-    page = request.GET.get('page')
-    posts = p.get_page(page)
-    return render(request, "network/following.html", {
-        "posts": posts
-    })
