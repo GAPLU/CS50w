@@ -55,7 +55,7 @@
                         {% endif %}
                         <div class="post-body">{{post.body}}</div>
                         <div class="post-timestamp"><span>{{post.timestamp}}</span></div>
-                        <div class="likes">{{post.likes}}</div>
+                        <div class="likes" id="likes-{{ post.id }}"><a onclick="like('{{ post.id }}')">❤️</a>{{post.likes}}</div>
                     </div>
                 {% endfor %}
             </div>

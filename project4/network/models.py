@@ -12,6 +12,7 @@ class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
     timestamp = models.DateTimeField(auto_now_add=True)
     likes = models.IntegerField(default=0)
+    people_like = models.ManyToManyField(User, related_name="liked_posts", null=True, blank=True)
 
     def __str__(self):
         return f"Posted by: {self.user}"
@@ -22,6 +23,6 @@ class Post(models.Model):
             "body": self.body,
             "user": self.user.username,
             "timestamp": self.timestamp.strftime("%b %d %Y, %I:%M %p"),
-            "likes": f"❤️{self.likes}",
+            "likes": self.likes,
             "user_id": self.user.id,
         }

@@ -3,6 +3,9 @@
 
 {% block body %}
 
+    <form>
+        {% csrf_token %}
+    </form>
     <div id="user_profile">
         <h1><b id="profile_username">{{ UserProfile.username }}</b></h1>
         <div class="follow"><b>{{ following }} </b><span>Following</span></div>
@@ -17,6 +20,7 @@
                         <input type="submit" id="to-follow" value="Follow" name="to-follow" class="btn btn-primary">
                     {% endif %}
                 </form>
+                {% csrf_token %}
             </div>
         {% endif %}
     </div>

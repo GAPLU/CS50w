@@ -4,6 +4,7 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 from django.urls import resolve
 import json
 
@@ -152,8 +153,23 @@ def update_post(request):
     data = json.loads(request.body)
     body = data.get("body", "")
     id = data.get("id", "")
-    print(id)
-    print(body)
     Post.objects.filter(id=id).update(body=body)
-
     return JsonResponse({"message": "Posted successfully."}, status=201)
+
+@csrf_exempt
+def single_post(request, post_id):
+
+    user = User.objects.get(id=request.user.id)
+    post = Post.objects.filter(id=post_id).first()
+    
+
+    if post.people_like and user in post.people_like.all():
+        post.people_like.remove(user)
+        post.likes -= 1
+    else:
+        post.people_like.add(user)
+        post.likes += 1
+
+    post.save()
+
+    return JsonResponse(post.serialize(), safe=False)

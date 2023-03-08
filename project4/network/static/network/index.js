@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function (){
     });
 });
 
+
 function post(event) {
     event.preventDefault();
     const body = document.querySelector('#post-body').value;
@@ -81,3 +82,15 @@ function save(editBtn, saveBtn, postId, textarea, postBody) {
 }
 
 
+function like(post_id) {
+    
+    fetch(`/post/${post_id}`, {
+        method: "PUT",
+        body: "toggle"
+    })
+    .then(response => response.json())
+    .then(data => {
+        const likes = document.querySelector(`#likes-${post_id}`);
+        likes.innerHTML = `<a onclick="like('${post_id}')">❤️</a>${data.likes}`;
+    })
+}
