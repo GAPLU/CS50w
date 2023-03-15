@@ -63,3 +63,7 @@ def register_view(request):
 
     else:
         return render(request, "type_speed/register.html", {})
+    
+
+def profile(request):
+    return render(request, "type_speed/profile.html")
