@@ -1,65 +1,27 @@
+
+let currentLetterIndex = 1;
+const allowedChars = /^[A-Za-z0-9.,-]+$/;
+
 document.addEventListener('DOMContentLoaded', function() {
 
     load_text();
     const button = document.getElementById("refresh-button");
     button.addEventListener('click', () => load_text())
 
-
-    const allowedChars = /^[A-Za-z0-9.,-]+$/;
-
-    let currentLetterIndex = 1;
-
     const textInput = document.getElementById('text_field');
-    textInput.addEventListener('keyup', (event) => {
-
-        const key = event.key;
-
-        if (key === 'Shift') {
-            return;
-        }    
-
-        if (key === 'Alt' || key === 'Tab') {
-            event.preventDefault();
-            return;
-        }
-           
-        if (!allowedChars.test(key) && key !== ' ') {
-            event.preventDefault();
-            return;
-        }
-
-        if (allowedChars.test(key) || key === ' ') {
-
-            const currentLetter = document.getElementById(`letter${currentLetterIndex}`);
-            const nextLetter = document.getElementById(`letter${currentLetterIndex + 1}`)
-
-            if (currentLetter) {
-
-                if (currentLetter.innerHTML === key) {
-                    currentLetter.classList.remove('orange');
-                    currentLetter.classList.remove('red');
-                    currentLetter.classList.add('green')
-                    nextLetter.classList.add('orange');
-                    currentLetterIndex++;
-                }
-                else {
-                    currentLetter.classList.remove('orange');
-                    currentLetter.classList.add('red')
-                }
-            }
-        }
-
-    });
+    textInput.addEventListener('keyup', (event) => input_process(event));
 
     document.addEventListener('click', () => {
         textInput.focus();
     });
- 
+
+
 });
 
 
 function load_text() {
 
+    currentLetterIndex = 1;
     const message = document.createElement('span');
     message.classList.add('letter');
     message.textContent = 'Text is loading...';
@@ -67,9 +29,6 @@ function load_text() {
     const textDiv = document.querySelector('#text-div');
     textDiv.innerHTML = '';
     textDiv.append(message);
-
-
-    const allowedChars = /^[A-Za-z0-9.,-]+$/;
 
     const options = {
         method: 'GET',
@@ -110,4 +69,45 @@ function load_text() {
         document.getElementById('letter1').classList.add('orange');
     });
 
+}
+
+function input_process(event) {
+
+    const key = event.key;
+
+    if (key === 'Shift') {
+        return;
+    }    
+
+    if (key === 'Alt' || key === 'Tab') {
+        event.preventDefault();
+        return;
+    }
+       
+    if (!allowedChars.test(key) && key !== ' ') {
+        event.preventDefault();
+        return;
+    }
+
+    if (allowedChars.test(key) || key === ' ') {
+
+        const currentLetter = document.getElementById(`letter${currentLetterIndex}`);
+        const nextLetter = document.getElementById(`letter${currentLetterIndex + 1}`)
+
+        if (currentLetter) {
+
+            if (currentLetter.innerHTML === key) {
+                console.log("equal")
+                currentLetter.classList.remove('orange');
+                currentLetter.classList.remove('red');
+                currentLetter.classList.add('green')
+                nextLetter.classList.add('orange');
+                currentLetterIndex++;
+            }
+            else {
+                currentLetter.classList.remove('orange');
+                currentLetter.classList.add('red')
+            }
+        }
+    }
 }

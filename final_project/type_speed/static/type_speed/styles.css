@@ -29,11 +29,6 @@ body {
     background-color: red;
 }
 
-.letter {
-    transition: background-color 0.1s ease, color 0.1s ease;
-}
-
-
 @media (max-width: 991.98px) {
     .navbar-custom .navbar-nav {
         flex-direction: row;
