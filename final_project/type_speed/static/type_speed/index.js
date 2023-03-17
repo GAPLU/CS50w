@@ -59,9 +59,12 @@ function load_text() {
         let letterCounter = 1;
         for (const key in texts) {
             if (texts.hasOwnProperty(key)) {
-                const value = texts[key];
+                let value = texts[key];
+                value = value.replace(/[.,-]/g, ' ');
+                value = value.replace(/ {2}/g, ' ');
+
                 for (let i = 0; i < value.length; i++) {
-                    const letter = value[i];
+                    const letter = value[i].toLowerCase();
                     if (letter.match(allowedChars) || letter === ' ') {
                         const element = document.createElement('span');
                         element.classList.add('letter');
