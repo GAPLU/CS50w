@@ -29,24 +29,14 @@ body {
     background-color: red;
 }
 
-@media (max-width: 991.98px) {
-    .navbar-custom .navbar-nav {
-        flex-direction: row;
-    }
-    
-    .navbar-custom .nav-item {
-        margin: 10px;
-    }
-}
-
 #container {
     display: grid;
     grid-template-areas: 
             'info info'
             'timer text'
             'seconds text';
-    grid-template-columns: 150px 1fr;
-    grid-template-rows: 100px 1fr 1fr;
+    grid-template-columns: minmax(150px, auto) 1fr;
+    grid-template-rows: minmax(100px, auto) 1fr 1fr;
 }
 
 #container div {
@@ -58,13 +48,13 @@ body {
 }
 
 
-#info {
+.info {
     grid-area: info;
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: sans-serif;
-
+    text-align: center;
 }
 
 .timer {
@@ -89,16 +79,77 @@ body {
 
 #text-div {
     padding: 15px;
-    height: 300px;
+    height: 220px;
     overflow-y: auto;  
     border: 1px dotted gray;
     overflow: hidden;
     grid-area: text;
     font-family: Merriweather,serif;
     font-size: 23px;
+    scroll-behavior: smooth;
 }
 
 #refresh {
     text-align: center;
     margin-top: 20px;
+}
+
+.results {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    text-align: center;
+    font-size: 50px;
+    margin-top: 50px;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+.test-results {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+  
+.result-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 20px;
+}
+  
+.result-description {
+    font-size: 16px;
+    color: #777;
+}
+
+@media (max-width: 991.98px) {
+    
+    .navbar-custom .navbar-nav {
+        flex-direction: row;
+    }
+    
+    .navbar-custom .nav-item {
+        margin: 10px;
+    }
+    
+    .results {
+        width: 130px;
+        height: 130px;
+        font-size: 20px;
+        margin-top: 20px;
+    }
+
+    .result-description {
+        font-size: 12px;
+    }
+
+    .test-results {
+        flex-direction: column;
+        align-items: center;
+    }
 }
