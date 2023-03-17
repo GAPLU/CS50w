@@ -1,6 +1,5 @@
 
 let time = 60;
-let timerStarted = false;
 let currentLetterIndex = 1;
 let timerInterval;
 let scrollDistance;
@@ -43,7 +42,6 @@ function load_text() {
     timer.innerHTML = 60;
     time = 60;
     currentLetterIndex = 1;
-    timerStarted = false;
     clearInterval(timerInterval);
     const message = document.createElement('span');
     message.classList.add('letter');
@@ -63,14 +61,19 @@ function load_text() {
             if (texts.hasOwnProperty(key)) {
                 const value = texts[key];
                 for (let i = 0; i < value.length; i++) {
-                    const letter = value[i].toLowerCase();
-                    const cleanedLetter = letter.replace(/[.,-]/g, ' ');
-                    if (cleanedLetter.match(allowedChars) || cleanedLetter === ' ') {
+                    const letter = value[i];
+                    if (letter.match(allowedChars) || letter === ' ') {
                         const element = document.createElement('span');
                         element.classList.add('letter');
                         element.id = `letter${letterCounter}`;
-                        element.textContent = cleanedLetter;
+                        element.textContent = letter;
                         textDiv.append(element);
+
+                        if (letter == ' ') {
+                            const zeroWidthSpaceElement = document.createElement('span');
+                            zeroWidthSpaceElement.innerHTML = '&ZeroWidthSpace;';
+                           textDiv.append(zeroWidthSpaceElement);
+                        }
 
                         letterCounter++;
                     }
@@ -105,10 +108,9 @@ function input_process(event) {
 
             if (currentLetter.innerHTML === key) {
 
-                if (currentLetterIndex === 1 && !timerStarted) {
+                if (currentLetterIndex === 1) {
                     clearInterval(timerInterval);
                     timerInterval = setInterval(start_timer, 1000);
-                    timerStarted = true;
                     start_timer();
                 }
                 currentLetter.classList.remove('orange');
@@ -124,10 +126,9 @@ function input_process(event) {
                 }
             }
             else {
-                if (currentLetterIndex === 1 && !timerStarted) {
+                if (currentLetterIndex === 1  && !currentLetter.classList.contains('red')) {
                     clearInterval(timerInterval);
                     timerInterval = setInterval(start_timer, 1000);
-                    timerStarted = true;
                     start_timer();
                 }
                 currentLetter.classList.remove('orange');
@@ -140,12 +141,10 @@ function input_process(event) {
 
 function start_timer() {
     
-    if (timerStarted) {
-        const timer = document.getElementById('timer');
-        timer.innerHTML = time;
-        time--;
-    }
-
+    const timer = document.getElementById('timer');
+    timer.innerHTML = time;
+    time--;
+   
     if (time < 0){
         clearInterval(timerInterval)
         document.querySelector('#speed-test').style.display = 'none';
