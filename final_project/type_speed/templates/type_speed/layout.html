@@ -18,7 +18,7 @@
               <ul class="navbar-nav mr-auto flex-nowrap">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'profile' %}"><strong>{{ user.username }}</strong></a>
+                        <a class="nav-link" href="{% url 'profile' username=request.user %}"><strong>{{ user.username }}</strong></a>
                     </li>
                 {% endif %}
                 <li class="nav-item">
@@ -44,7 +44,7 @@
             {% if messages %}
                 {% for message in messages %}
                     <div class="alert alert-warning">
-                        <strong>Warning!</strong> {{ message }}.
+                        <strong>Warning!</strong> {{ message }}
                     </div>
                 {% endfor %}
             {% endif %}

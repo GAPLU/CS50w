@@ -3,7 +3,7 @@
 
 {% block body %}
 
-   <h1 class="center">Typing Speed Test</h1><br>
+   <h1>Typing Speed Test</h1><br>
    
    <div id="speed-test">
     <div id="container"> 
@@ -26,19 +26,21 @@
     <div class="info"><h3>Your Result</h3></div>
     <div class="test-results">
       <div class="result-item">
-        <div class="results" id="words-min">120</div>
+        <div class="results" id="words-min"></div>
         <div class="result-description">Words/min</div>
       </div>
       <div class="result-item">
-        <div class="results" id="chars-min">402</div>
+        <div class="results" id="chars-min"></div>
         <div class="result-description">Chars/min</div>
       </div>
       <div class="result-item">
-        <div class="results" id="accuracy">75%</div>
+        <div class="results" id="accuracy"></div>
         <div class="result-description">Accuracy</div>
       </div>
     </div>
   </div>
+
+  <form>{% csrf_token %}</form>
 
 {% endblock %}
 

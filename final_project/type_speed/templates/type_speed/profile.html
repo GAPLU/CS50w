@@ -3,7 +3,46 @@
 
 {% block body %}
 
-    I'm someone
+    <div class="d-flex justify-content-center" id="card">
+        <div class="card" style="width:300px">
+
+            {% if request.user.gender == 'male' %}
+                <img class="card-img-top" src="{% static 'type_speed/icons/man.png' %}" alt="Card image">
+            {% elif request.user.gender == 'female' %}
+                <img class="card-img-top" src="{% static 'type_speed/icons/woman.png' %}" alt="Card image">
+            {% else %}
+                <img class="card-img-top" src="{% static 'type_speed/icons/hacker.png' %}" alt="Card image">
+            {% endif %}
+
+            <div class="card-body">
+                <h4 class="card-title">{{ request.user }}</h4>
+                <p class="card-text">Some example text.</p>
+            </div>
+        </div>
+    </div>
+
+    <ul class="list-group">
+        <li class="list-group-item"><b><h2>Best Scores</h2></b></li>
+        {% for score in scores %}
+            <li class="list-group-item">
+                <b class="info">Top {{ forloop.counter }}</b>
+                <div class="test-results">
+                    <div class="result-item">
+                        <div class="results"  style="height: 100px; width: 100px; font-size: 21px; margin: 20px; margin-bottom: 0px;">{{ score.chars_min }}</div>
+                        <div class="result-description">Chars/min</div>
+                      </div>
+                    <div class="result-item">
+                      <div class="results"  style="height: 100px; width: 100px; font-size: 21px; margin: 20px; margin-bottom: 0px">{{ score.words_min }}</div>
+                      <div class="result-description">Words/min</div>
+                    </div>
+                    <div class="result-item">
+                      <div class="results"  style="height: 100px; width: 100px; font-size: 21px; margin: 20px; margin-bottom: 0px">{{ score.accuracy }}</div>
+                      <div class="result-description">Accuracy</div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+
 
 {% endblock %}
 

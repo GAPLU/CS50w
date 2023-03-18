@@ -1,6 +1,9 @@
 
-let time = 60;
+let time;
 let currentLetterIndex = 1;
+let spelled;
+let misspelled;
+let words;
 let timerInterval;
 let scrollDistance;
 const allowedChars = /^[A-Za-z0-9.,-]+$/;
@@ -34,6 +37,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 function load_text() {
+
+    spelled = 0;
+    misspelled = 0;
+    words = 0;
 
     document.querySelector('#speed-test').style.display = 'block';
     document.querySelector('#test-result').style.display = 'none';
@@ -116,11 +123,17 @@ function input_process(event) {
                     timerInterval = setInterval(start_timer, 1000);
                     start_timer();
                 }
+
+                if (key === ' ') {
+                    words +=1;
+                }
+
                 currentLetter.classList.remove('orange');
                 currentLetter.classList.remove('red');
                 currentLetter.classList.add('green')
                 nextLetter.classList.add('orange');
                 currentLetterIndex++;
+                spelled += 1;
                 const textDiv = document.getElementById('text-div');
                 const threshold = textDiv.offsetHeight * 0.5;
                 if (nextLetter.offsetTop - textDiv.scrollTop > threshold) {
@@ -129,6 +142,7 @@ function input_process(event) {
                 }
             }
             else {
+
                 if (currentLetterIndex === 1  && !currentLetter.classList.contains('red')) {
                     clearInterval(timerInterval);
                     timerInterval = setInterval(start_timer, 1000);
@@ -136,6 +150,7 @@ function input_process(event) {
                 }
                 currentLetter.classList.remove('orange');
                 currentLetter.classList.add('red')
+                misspelled += 1;
             }
         }
     }
@@ -150,8 +165,42 @@ function start_timer() {
    
     if (time < 0){
         clearInterval(timerInterval)
-        document.querySelector('#speed-test').style.display = 'none';
-        document.querySelector('#test-result').style.display = 'block';
-
+        process_results();
     }
+}
+
+
+function process_results() {
+
+    document.querySelector('#speed-test').style.display = 'none';
+    document.querySelector('#test-result').style.display = 'block';
+    let accuracyRate = (spelled / (spelled + misspelled)) * 100;
+    if (!isFinite(accuracyRate)) {
+        accuracyRate = 0;
+    }
+    accuracyRate = accuracyRate.toFixed(1);
+    accuracyRate = `${accuracyRate}%`;
+    document.querySelector('#words-min').innerHTML = words;
+    document.querySelector('#chars-min').innerHTML = spelled;
+    document.querySelector('#accuracy').innerHTML = accuracyRate;
+    sendData(words, spelled, accuracyRate)
+
+}
+
+
+function sendData(words, spelled, accuracyRate) {
+
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    fetch('/results/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken,
+        },
+        body: JSON.stringify({
+            words: words,
+            spelled: spelled,
+            accuracyRate: accuracyRate,
+        }),
+    });
 }
