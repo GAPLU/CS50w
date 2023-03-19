@@ -92,12 +92,12 @@ h2 {
     scroll-behavior: smooth;
 }
 
-#refresh {
+#refresh, #save-result, #try-again {
     text-align: center;
     margin-top: 20px;
 }
 
-#top3,#test-result .results {
+#top3 .results, #test-result .results {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -111,21 +111,21 @@ h2 {
     margin-left: 40px;
     margin-right: 40px;
 }
-#top3,#test-result .test-results {
+#top3 .test-results, #test-result .test-results {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: row;
 }
   
-#top3,#test-result .result-item {
+#top3 .result-item, #test-result .result-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 0 20px;
 }
   
-#top3,#test-result .result-description {
+#top3 .result-description, #test-result .result-description {
     font-size: 16px;
     color: #777;
 }
@@ -193,18 +193,18 @@ h2 {
         margin: 10px;
     }
     
-    #top3 .results {
+    #top3 .results, #test-result .results {
         width: 130px;
         height: 130px;
         font-size: 20px;
         margin-top: 20px;
     }
 
-    #top3 .result-description {
+    #top3 .result-description, #test-result .result-description {
         font-size: 12px;
     }
 
-    #top3 .test-results {
+    #top3 .test-results, #test-result .test-results {
         flex-direction: column;
         align-items: center;
     }

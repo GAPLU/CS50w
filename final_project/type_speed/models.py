@@ -5,16 +5,6 @@ class User(AbstractUser):
     gender = models.CharField(max_length=32, default='other')
 
 
-class Scores(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="scores")
-    words_min = models.IntegerField(default=0)
-    chars_min = models.IntegerField(default=0)
-    accuracy = models.CharField(max_length=32)
-
-    def __str__(self):
-        return f"Done by: {self.user}"
-
-
 class CustomText(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="texts")
     title = models.CharField(max_length=64, default="Blank")
@@ -30,3 +20,17 @@ class CustomText(models.Model):
             "text": self.text,
             "user": self.user.username
         }
+    
+
+class Scores(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="scores")
+    words_min = models.IntegerField(default=0)
+    chars_min = models.IntegerField(default=0)
+    accuracy = models.CharField(max_length=32)
+    custom = models.BooleanField(default=False) 
+    text = models.ForeignKey(CustomText, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return f"Done by: {self.user}"
+
+

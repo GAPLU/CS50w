@@ -8,7 +8,7 @@
             <li class="list-group-item"><b><h2>Best Scores</h2></b></li>
             {% for score in scores %}
                 <li class="list-group-item">
-                    <b>{{ forloop.counter }}</b>
+                    <b>{{ start_rank|add:forloop.counter }}</b>
                     <div class="test-results">
                         <div id="username-div">
                             User: <b>{{score.user}}</b>
@@ -29,6 +29,20 @@
             {% endfor %}
         </ul>
     </div>
+    <nav>
+        <ul class="pagination justify-content-center">
+            {% if scores.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ scores.previous_page_number }}">Previous</a></li>
+            {% endif %}
+
+            {% if scres.paginator.num_pages > 1 %}
+                <li class="page-item disabled"><a class="page-link" href="#">Page {{ scores.number }} of {{ scores.paginator.num_pages }}</a></li>
+            {% endif %}
+            {% if scores.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ scores.next_page_number }}">Next</a></li>
+            {% endif %}
+        </ul>
+    </nav>
 
 
 {% endblock %}

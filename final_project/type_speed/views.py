@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.db import IntegrityError
@@ -88,16 +89,30 @@ def process_results(request):
         words = data['words']
         spelled = data['spelled']
         accuracy = data['accuracyRate']
-        if User.objects.filter(username=request.user):
-            result = Scores(user=request.user, words_min=words, chars_min=spelled, accuracy=accuracy)
-            result.save()
-        return HttpResponse(status=204)
-    
+        custom = data['custom']
+        if custom == False:
+            if User.objects.filter(username=request.user):
+                result = Scores(user=request.user, words_min=words, chars_min=spelled, accuracy=accuracy, custom=False)
+                result.save()
+            return HttpResponse(status=204)
+        else:
+            text_id = data['textId']
+            if User.objects.filter(username=request.user):
+                text = CustomText.objects.get(id=text_id)
+                result = Scores(user=request.user, words_min=words, chars_min=spelled, accuracy=accuracy, custom=True, text=text)
+                result.save()
+            return HttpResponse(status=204)
+        
 
 def ranking(request):
     scores = Scores.objects.all().order_by('-chars_min')
+    p = Paginator(scores, 10)
+    page = request.GET.get('page')
+    scores = p.get_page(page)
+    start_rank = (scores.number - 1) * scores.paginator.per_page
     return render(request, "type_speed/ranking.html", {
-        'scores': scores
+        'scores': scores,
+        'start_rank': start_rank
     })    
 
 

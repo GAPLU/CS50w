@@ -6,6 +6,7 @@ let misspelled;
 let words;
 let timerInterval;
 let scrollDistance;
+let accuracyRate;
 const allowedChars = /^[A-Za-z0-9.,-]+$/;
 const options = {
     method: 'GET',
@@ -29,6 +30,15 @@ document.addEventListener('DOMContentLoaded', function() {
         input_process(event);
     });
 
+    document.getElementById("save-button").addEventListener('click', () => {
+        sendData(words, spelled, accuracyRate);
+        load_text();
+    });
+
+    document.getElementById("again-button").addEventListener('click', () => {
+        load_text();
+    });
+
     document.addEventListener('click', () => {
         textInput.focus();
     });
@@ -38,6 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function load_text() {
 
+    accuracyRate = 0;
     spelled = 0;
     misspelled = 0;
     words = 0;
@@ -174,7 +185,7 @@ function process_results() {
 
     document.querySelector('#speed-test').style.display = 'none';
     document.querySelector('#test-result').style.display = 'block';
-    let accuracyRate = (spelled / (spelled + misspelled)) * 100;
+    accuracyRate = (spelled / (spelled + misspelled)) * 100;
     if (!isFinite(accuracyRate)) {
         accuracyRate = 0;
     }
@@ -183,7 +194,6 @@ function process_results() {
     document.querySelector('#words-min').innerHTML = words;
     document.querySelector('#chars-min').innerHTML = spelled;
     document.querySelector('#accuracy').innerHTML = accuracyRate;
-    sendData(words, spelled, accuracyRate)
 
 }
 
@@ -201,6 +211,7 @@ function sendData(words, spelled, accuracyRate) {
             words: words,
             spelled: spelled,
             accuracyRate: accuracyRate,
+            custom: false
         }),
     });
 }

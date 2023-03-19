@@ -1,9 +1,11 @@
 
 let time;
+let textId;
 let currentLetterIndex = 1;
 let spelled;
 let misspelled;
 let words;
+let accuracyRate;
 let timerInterval;
 let scrollDistance;
 const allowedChars = /^[A-Za-z0-9.,-]+$/;
@@ -30,13 +32,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const button = document.getElementById("restart-button");
     button.addEventListener('click', () => {
-        load_text('3');
+        load_text(textId);
     });
 
 
     const textInput = document.getElementById('text_field');
     textInput.addEventListener('keyup', (event) => {
         input_process(event);
+    });
+
+    document.getElementById("save-button").addEventListener('click', () => {
+        sendData(words, spelled, accuracyRate);
+        load_text(textId);
+    });
+
+    document.getElementById("again-button").addEventListener('click', () => {
+        load_text(textId);
     });
 
     document.addEventListener('click', () => {
@@ -48,6 +59,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function load_text(id) {
 
+    textId = id;
+    accuracyRate = 0;
     spelled = 0;
     misspelled = 0;
     words = 0;
@@ -58,7 +71,7 @@ function load_text(id) {
 
     const timer = document.getElementById('timer');
     timer.innerHTML = 60;
-    time = 60;
+    time = 2;
     currentLetterIndex = 1;
     clearInterval(timerInterval);
     const message = document.createElement('span');
@@ -184,7 +197,7 @@ function process_results() {
     document.querySelector('#speed-test').style.display = 'none';
     document.querySelector('#text-selection').style.display = 'none';
     document.querySelector('#test-result').style.display = 'block';
-    let accuracyRate = (spelled / (spelled + misspelled)) * 100;
+    accuracyRate = (spelled / (spelled + misspelled)) * 100;
     if (!isFinite(accuracyRate)) {
         accuracyRate = 0;
     }
@@ -193,7 +206,6 @@ function process_results() {
     document.querySelector('#words-min').innerHTML = words;
     document.querySelector('#chars-min').innerHTML = spelled;
     document.querySelector('#accuracy').innerHTML = accuracyRate;
-    sendData(words, spelled, accuracyRate)
 
 }
 
@@ -211,6 +223,8 @@ function sendData(words, spelled, accuracyRate) {
             words: words,
             spelled: spelled,
             accuracyRate: accuracyRate,
+            custom: true,
+            textId: textId
         }),
     });
 }
