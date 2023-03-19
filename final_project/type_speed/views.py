@@ -74,10 +74,14 @@ def register_view(request):
 
 def profile(request, username):
 
-    user = User.objects.get(username=username)  
+    user = User.objects.get(username=username)
+    tests = user.scores.all().count()
+    if not tests:
+        tests = 0
     scores = user.scores.filter(custom=False).order_by('-chars_min')
     return render(request, "type_speed/profile.html", {
-        'scores': scores[:3]
+        'scores': scores[:3],
+        'tests': tests
     })
 
 
