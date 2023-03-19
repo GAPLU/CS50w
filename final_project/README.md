@@ -43,4 +43,7 @@ Overall, Typing Speed Test is an entertaining web app that combines learning and
 * It starts with a default login, register, and logout views. All the other functions are mainly for interacting with js fetch function, since I tried to make it as asynchronous as possible. But still there are a few functions for rendering pages with some input parameters.
   
 
-
+###### How to launch it:
+In order to use the program, no additional modules or frameworks except Django are required. The only thing needed is an API key for a WikiHow. It can be retrieved on this website for free: https://rapidapi.com/hargrimm/api/wikihow/
+After completing registration, the API key for can be accessed without any problems.
+Then, clone this repository and run the server in the terminal.
