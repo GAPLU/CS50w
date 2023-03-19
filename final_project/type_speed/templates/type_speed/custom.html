@@ -4,8 +4,34 @@
 {% block body %}
 
    <h1>Typing Speed Test</h1><br>
-   
-   <div id="speed-test">
+   <div id="text-selection">
+    <div class="container mt-3">
+        <h2>Choose a Text</h2>
+        <input class="form-control" id="myInput" type="text" placeholder="Search..">
+        <br>
+        <table class="table table-bordered">
+        <thead>
+            <tr>
+            <th>Author</th>
+            <th>Title</th>
+            </tr>
+        </thead>
+        <tbody id="myTable">
+            {% for text in texts %}
+                <tr id="{{ text.id }}">
+                    <td data-search="{{ text.user }}">{{ text.user }}</td>
+                    <td class="title-row" data-search="{{ text.title }}">
+                        {{ text.title }}
+                        <button class="btn btn-primary" onclick="load_text('{{ text.id }}')">Select</button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        </table>    
+    </div>
+  </div>
+
+   <div id="speed-test" style="display: none;">
     <div id="container"> 
       <div class="info"><h3>Type the following text. The countdown will begin as soon as you print the first letter.</h3></div>
       <div class="timer" id="timer">60</div>
@@ -18,7 +44,7 @@
       <input type="text" id="text_field" value="" autocorrect="off" autocapitalize="none" autocomplete="off" style="width: 100%; height: 0px;" autofocus />
     </div>
     <div id="refresh">
-      <button class="btn btn-primary" id="refresh-button">Refresh</button>
+      <button class="btn btn-primary" id="restart-button">Restart</button>
     </div>
   </div>
 
@@ -46,5 +72,5 @@
 {% endblock %}
 
 {% block script %}
-    <script src="{% static 'type_speed/index.js' %}"></script>
+    <script src="{% static 'type_speed/custom.js' %}"></script>
 {% endblock %}

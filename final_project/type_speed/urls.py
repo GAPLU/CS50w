@@ -11,6 +11,10 @@ urlpatterns = [
     path("profile/<str:username>", views.profile, name="profile"),
     path("results/", views.process_results, name="process_results"),
     path("ranking/", views.ranking, name="ranking"),
-    path("new_text", views.create_text, name="create_text")
+    path("new_text", views.create_text, name="create_text"),
+    path("custom", views.custom, name="custom"),
+
+    #APIs
+    path("text/<str:id>", views.send_text, name="send_text")
     
 ]

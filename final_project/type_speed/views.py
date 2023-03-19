@@ -104,10 +104,31 @@ def ranking(request):
 def create_text(request):
 
     if request.method == "GET":
-        return render(request, "type_speed/text_form.html")
+        if User.objects.filter(username=request.user):
+            return render(request, "type_speed/text_form.html")
+        else:
+            return redirect('login')
     
     if request.method == "POST":
+        title = request.POST["title"]
         text = request.POST["text-body"]
-        custom_text = CustomText(user=request.user, text=text)
+        custom_text = CustomText(user=request.user, title=title, text=text)
         custom_text.save()
         return redirect('index')
+
+
+def custom(request):
+            
+    if User.objects.filter(username=request.user):
+        texts = CustomText.objects.all()
+        return render(request, 'type_speed/custom.html', {
+            "texts": texts
+        })
+    else:
+        return redirect('login')
+
+
+def send_text(request, id):
+
+    text = CustomText.objects.get(id=id)
+    return JsonResponse(text.serialize(), safe=False)

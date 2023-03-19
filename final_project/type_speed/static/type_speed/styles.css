@@ -97,7 +97,7 @@ h2 {
     margin-top: 20px;
 }
 
-#top3 .results {
+#top3,#test-result .results {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -111,21 +111,21 @@ h2 {
     margin-left: 40px;
     margin-right: 40px;
 }
-#top3 .test-results {
+#top3,#test-result .test-results {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: row;
 }
   
-#top3 .result-item {
+#top3,#test-result .result-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 0 20px;
 }
   
-#top3.result-description {
+#top3,#test-result .result-description {
     font-size: 16px;
     color: #777;
 }
@@ -239,3 +239,21 @@ h2 {
         text-align: center;
     }
 }
+
+#title {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.title-row {
+    position: relative;
+}
+
+.title-row button {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-right: 5px; 
+}
+

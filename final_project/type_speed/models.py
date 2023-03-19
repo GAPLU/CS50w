@@ -17,7 +17,16 @@ class Scores(models.Model):
 
 class CustomText(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="texts")
+    title = models.CharField(max_length=64, default="Blank")
     text = models.TextField()
 
     def __str__(self):
         return f"Written by: {self.user}"
+    
+    def serialize(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "text": self.text,
+            "user": self.user.username
+        }

@@ -6,7 +6,8 @@
 
     <form action="{% url 'create_text' %}" method="post">
         {% csrf_token %}
-        <textarea class="form-control" rows="15" name="text-body" minlength="1000"></textarea>
+        <input type="text" class="form-control" name="title" placeholder="Title" id="title" required>
+        <textarea class="form-control" rows="15" name="text-body" minlength="1000" placeholder="Input your text here"></textarea>
         <input type="submit" class="btn btn-primary" value="Create" style="margin-top: 5px;"/>      
     </form>
 

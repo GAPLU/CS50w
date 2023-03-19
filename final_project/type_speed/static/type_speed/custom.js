@@ -7,22 +7,32 @@ let words;
 let timerInterval;
 let scrollDistance;
 const allowedChars = /^[A-Za-z0-9.,-]+$/;
-const options = {
-    method: 'GET',
-    headers: {
-        'X-RapidAPI-Key': '068a260094msh415d94a551705eap17f1f8jsncc894abd8492',
-        'X-RapidAPI-Host': 'hargrimm-wikihow-v1.p.rapidapi.com'
-    }
-};
+
+$(document).ready(function () {
+    $("#myInput").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function () {
+            var searchData = $(this).find("td[data-search]").map(function () {
+                return $(this).attr("data-search").toLowerCase();
+            }).get().join(" ");
+            $(this).toggle(searchData.indexOf(value) > -1);
+        });
+    });
+});
+
 
 document.addEventListener('DOMContentLoaded', function() {
 
-    load_text();
+    
+    document.querySelector('#speed-test').style.display = 'none';
+    document.querySelector('#text-selection').style.display = 'block';
+    document.querySelector('#test-result').style.display = 'none';
 
-    const button = document.getElementById("refresh-button");
+    const button = document.getElementById("restart-button");
     button.addEventListener('click', () => {
-        load_text();
+        load_text('3');
     });
+
 
     const textInput = document.getElementById('text_field');
     textInput.addEventListener('keyup', (event) => {
@@ -36,18 +46,19 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-function load_text() {
+function load_text(id) {
 
     spelled = 0;
     misspelled = 0;
     words = 0;
 
     document.querySelector('#speed-test').style.display = 'block';
+    document.querySelector('#text-selection').style.display = 'none';
     document.querySelector('#test-result').style.display = 'none';
 
     const timer = document.getElementById('timer');
     timer.innerHTML = 60;
-    time = 2;
+    time = 60;
     currentLetterIndex = 1;
     clearInterval(timerInterval);
     const message = document.createElement('span');
@@ -59,35 +70,33 @@ function load_text() {
     textDiv.append(message);
     scrollDistance = textDiv.scrollTop;
 
-    fetch('https://hargrimm-wikihow-v1.p.rapidapi.com/steps?count=100', options)
+    fetch(`/text/${id}`, {
+        method: 'GET'
+    })
     .then(response => response.json())
     .then(texts => {
         textDiv.innerHTML = '';
         let letterCounter = 1;
-        for (const key in texts) {
-            if (texts.hasOwnProperty(key)) {
-                let value = texts[key];
-                value = value.replace(/[.,-]/g, ' ');
-                value = value.replace(/ {2}/g, ' ');
+        let value = texts['text'];  
+        value = value.replace(/[.,-]/g, ' ');
+        value = value.replace(/ {2}/g, ' ');
 
-                for (let i = 0; i < value.length; i++) {
-                    const letter = value[i].toLowerCase();
-                    if (letter.match(allowedChars) || letter === ' ') {
-                        const element = document.createElement('span');
-                        element.classList.add('letter');
-                        element.id = `letter${letterCounter}`;
-                        element.textContent = letter;
-                        textDiv.append(element);
+        for (let i = 0; i < value.length; i++) {
+            const letter = value[i].toLowerCase();
+            if (letter.match(allowedChars) || letter === ' ') {
+                const element = document.createElement('span');
+                element.classList.add('letter');
+                element.id = `letter${letterCounter}`;
+                element.textContent = letter;
+                textDiv.append(element);
 
-                        if (letter == ' ') {
-                            const zeroWidthSpaceElement = document.createElement('span');
-                            zeroWidthSpaceElement.innerHTML = '&ZeroWidthSpace;';
-                           textDiv.append(zeroWidthSpaceElement);
-                        }
-
-                        letterCounter++;
-                    }
+                if (letter == ' ') {
+                    const zeroWidthSpaceElement = document.createElement('span');
+                    zeroWidthSpaceElement.innerHTML = '&ZeroWidthSpace;';
+                    textDiv.append(zeroWidthSpaceElement);
                 }
+
+                letterCounter++;
             }
         }
         document.getElementById('letter1').classList.add('orange');
@@ -173,6 +182,7 @@ function start_timer() {
 function process_results() {
 
     document.querySelector('#speed-test').style.display = 'none';
+    document.querySelector('#text-selection').style.display = 'none';
     document.querySelector('#test-result').style.display = 'block';
     let accuracyRate = (spelled / (spelled + misspelled)) * 100;
     if (!isFinite(accuracyRate)) {
