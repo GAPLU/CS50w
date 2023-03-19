@@ -22,8 +22,16 @@
                     </li>
                 {% endif %}
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'index' %}">Index</a>
+                  <a class="nav-link" href="{% url 'index' %}">Test</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'ranking' %}">Ranking List</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'create_text' %}">Create Text</a>
+                </li>
+                {% endif %}
                 {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'logout' %}">Log Out</a>

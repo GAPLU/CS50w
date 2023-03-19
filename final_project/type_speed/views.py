@@ -88,7 +88,26 @@ def process_results(request):
         words = data['words']
         spelled = data['spelled']
         accuracy = data['accuracyRate']
-        result = Scores(user=request.user, words_min=words, chars_min=spelled, accuracy=accuracy)
-        result.save()
+        if User.objects.filter(username=request.user):
+            result = Scores(user=request.user, words_min=words, chars_min=spelled, accuracy=accuracy)
+            result.save()
         return HttpResponse(status=204)
     
+
+def ranking(request):
+    scores = Scores.objects.all().order_by('-chars_min')
+    return render(request, "type_speed/ranking.html", {
+        'scores': scores
+    })    
+
+
+def create_text(request):
+
+    if request.method == "GET":
+        return render(request, "type_speed/text_form.html")
+    
+    if request.method == "POST":
+        text = request.POST["text-body"]
+        custom_text = CustomText(user=request.user, text=text)
+        custom_text.save()
+        return redirect('index')

@@ -1,0 +1,34 @@
+{% extends "type_speed/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+    <div id="ranking">
+        <ul class="list-group">
+            <li class="list-group-item"><b><h2>Best Scores</h2></b></li>
+            {% for score in scores %}
+                <li class="list-group-item">
+                    <b>{{ forloop.counter }}</b>
+                    <div class="test-results">
+                        <div id="username-div">
+                            User: <b>{{score.user}}</b>
+                        </div>
+                        <div class="result-item">
+                            <div class="results">{{ score.chars_min }}</div>
+                            <div class="result-description">Chars/min</div>
+                        </div>
+                        <div class="result-item">
+                        <div class="results">{{ score.words_min }}</div>
+                        <div class="result-description">Words/min</div>
+                        </div>
+                        <div class="result-item">
+                        <div class="results">{{ score.accuracy }}</div>
+                        <div class="result-description">Accuracy</div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+
+{% endblock %}

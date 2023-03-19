@@ -1,0 +1,13 @@
+{% extends "type_speed/layout.html" %}
+
+{% block body %}
+
+    <h2>Create Own Text</h2>
+
+    <form action="{% url 'create_text' %}" method="post">
+        {% csrf_token %}
+        <textarea class="form-control" rows="15" name="text-body" minlength="1000"></textarea>
+        <input type="submit" class="btn btn-primary" value="Create" style="margin-top: 5px;"/>      
+    </form>
+
+{% endblock %}

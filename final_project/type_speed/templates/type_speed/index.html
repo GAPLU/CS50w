@@ -18,7 +18,8 @@
       <input type="text" id="text_field" value="" autocorrect="off" autocapitalize="none" autocomplete="off" style="width: 100%; height: 0px;" autofocus />
     </div>
     <div id="refresh">
-      <button class="btn btn-primary" id="refresh-button">Refresh</button>
+      <button class="btn btn-primary" id="refresh-button" style="margin-right: 10px;">Internet Text</button>
+      <button class="btn btn-primary" id="custom-button">Custom Text</button>
     </div>
   </div>
 
@@ -41,6 +42,7 @@
   </div>
 
   <form>{% csrf_token %}</form>
+
 
 {% endblock %}
 

@@ -20,32 +20,30 @@
             </div>
         </div>
     </div>
-
-    <ul class="list-group">
-        <li class="list-group-item"><b><h2>Best Scores</h2></b></li>
-        {% for score in scores %}
-            <li class="list-group-item">
-                <b class="info">Top {{ forloop.counter }}</b>
-                <div class="test-results">
-                    <div class="result-item">
-                        <div class="results"  style="height: 100px; width: 100px; font-size: 21px; margin: 20px; margin-bottom: 0px;">{{ score.chars_min }}</div>
-                        <div class="result-description">Chars/min</div>
-                      </div>
-                    <div class="result-item">
-                      <div class="results"  style="height: 100px; width: 100px; font-size: 21px; margin: 20px; margin-bottom: 0px">{{ score.words_min }}</div>
-                      <div class="result-description">Words/min</div>
+    <div id="top3">
+        <ul class="list-group">
+            <li class="list-group-item"><b><h2>Best Scores</h2></b></li>
+            {% for score in scores %}
+                <li class="list-group-item">
+                    <b class="info">Top {{ forloop.counter }}</b>
+                    <div class="test-results">
+                        <div class="result-item">
+                            <div class="results"  style="height: 100px; width: 100px; font-size: 21px; margin: 20px; margin-bottom: 0px;">{{ score.chars_min }}</div>
+                            <div class="result-description">Chars/min</div>
+                            </div>
+                        <div class="result-item">
+                            <div class="results"  style="height: 100px; width: 100px; font-size: 21px; margin: 20px; margin-bottom: 0px">{{ score.words_min }}</div>
+                            <div class="result-description">Words/min</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="results"  style="height: 100px; width: 100px; font-size: 21px; margin: 20px; margin-bottom: 0px">{{ score.accuracy }}</div>
+                            <div class="result-description">Accuracy</div>
                     </div>
-                    <div class="result-item">
-                      <div class="results"  style="height: 100px; width: 100px; font-size: 21px; margin: 20px; margin-bottom: 0px">{{ score.accuracy }}</div>
-                      <div class="result-description">Accuracy</div>
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 
 
 {% endblock %}
 
-{% block script %}
-    <script src="{% static 'type_speed/index.js' %}"></script>
-{% endblock %}

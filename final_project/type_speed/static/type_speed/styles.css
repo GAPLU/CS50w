@@ -97,7 +97,7 @@ h2 {
     margin-top: 20px;
 }
 
-.results {
+#top3 .results {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -111,23 +111,76 @@ h2 {
     margin-left: 40px;
     margin-right: 40px;
 }
-.test-results {
+#top3 .test-results {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: row;
 }
   
-.result-item {
+#top3 .result-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 0 20px;
 }
   
-.result-description {
+#top3.result-description {
     font-size: 16px;
     color: #777;
+}
+
+#card {
+    margin: 15px;
+}
+
+.card-body {
+    background-color: silver;
+}
+
+#ranking .results {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    text-align: center;
+    font-size: 12px;
+}
+#ranking .test-results {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;   
+}
+  
+#ranking .result-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px 20px;
+}
+  
+#ranking .result-description {
+    font-size: 16px;
+    color: #777;
+}
+
+#ranking li.list-group-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    flex-wrap: nowrap;
+}
+
+#ranking b {
+    margin-right: 25px;
 }
 
 @media (max-width: 991.98px) {
@@ -140,27 +193,49 @@ h2 {
         margin: 10px;
     }
     
-    .results {
+    #top3 .results {
         width: 130px;
         height: 130px;
         font-size: 20px;
         margin-top: 20px;
     }
 
-    .result-description {
+    #top3 .result-description {
         font-size: 12px;
     }
 
-    .test-results {
+    #top3 .test-results {
         flex-direction: column;
         align-items: center;
     }
-}
 
-#card {
-    margin: 15px;
-}
+    #ranking li.list-group-item {
+        flex-direction: row;
+        align-items: center;
+    }
+    
+    #ranking b {
+        margin-right: 10px;
+    }
+    
+    #ranking .test-results {
+        flex-direction: row;
+        align-items: center;
+    }
+    
+    #ranking .result-item {
+        margin: 0px 10px;
+    }
 
-.card-body {
-    background-color: silver;
+    #ranking .results {
+        flex-shrink: 1;
+        width: 50px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    #username-div {
+        flex-shrink: 1;
+        text-align: center;
+    }
 }

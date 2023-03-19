@@ -24,6 +24,11 @@ document.addEventListener('DOMContentLoaded', function() {
         load_text();
     });
 
+    const customButton = document.getElementById("custom-button");
+    customButton.addEventListener('click', () => {
+        custom_text();
+    });
+
     const textInput = document.getElementById('text_field');
     textInput.addEventListener('keyup', (event) => {
         input_process(event);
@@ -173,6 +178,7 @@ function start_timer() {
 function process_results() {
 
     document.querySelector('#speed-test').style.display = 'none';
+    document.querySelector('#custom-text').style.display = 'none';
     document.querySelector('#test-result').style.display = 'block';
     let accuracyRate = (spelled / (spelled + misspelled)) * 100;
     if (!isFinite(accuracyRate)) {
@@ -203,4 +209,12 @@ function sendData(words, spelled, accuracyRate) {
             accuracyRate: accuracyRate,
         }),
     });
+}
+
+
+function custom_text() {
+
+    document.querySelector('#speed-test').style.display = 'block';
+    document.querySelector('#test-result').style.display = 'none';
+
 }
