@@ -58,7 +58,7 @@ function load_text() {
 
     const timer = document.getElementById('timer');
     timer.innerHTML = 60;
-    time = 2;
+    time = 60;
     currentLetterIndex = 1;
     clearInterval(timerInterval);
     const message = document.createElement('span');
@@ -191,6 +191,13 @@ function process_results() {
     }
     accuracyRate = accuracyRate.toFixed(1);
     accuracyRate = `${accuracyRate}%`;
+    let rank;
+    fetch(`/get_rank/${spelled}/False`)
+    .then(response => response.json())
+    .then(data => {
+        rank = data.rank;
+        document.querySelector('#rank').innerHTML = `You Are Top ${rank}!`;
+    });
     document.querySelector('#words-min').innerHTML = words;
     document.querySelector('#chars-min').innerHTML = spelled;
     document.querySelector('#accuracy').innerHTML = accuracyRate;

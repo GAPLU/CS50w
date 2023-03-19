@@ -75,7 +75,7 @@ def register_view(request):
 def profile(request, username):
 
     user = User.objects.get(username=username)  
-    scores = user.scores.all().order_by('-chars_min')
+    scores = user.scores.filter(custom=False).order_by('-chars_min')
     return render(request, "type_speed/profile.html", {
         'scores': scores[:3]
     })
@@ -103,18 +103,6 @@ def process_results(request):
                 result.save()
             return HttpResponse(status=204)
         
-
-def ranking(request):
-    scores = Scores.objects.all().order_by('-chars_min')
-    p = Paginator(scores, 10)
-    page = request.GET.get('page')
-    scores = p.get_page(page)
-    start_rank = (scores.number - 1) * scores.paginator.per_page
-    return render(request, "type_speed/ranking.html", {
-        'scores': scores,
-        'start_rank': start_rank
-    })    
-
 
 def create_text(request):
 
@@ -147,3 +135,29 @@ def send_text(request, id):
 
     text = CustomText.objects.get(id=id)
     return JsonResponse(text.serialize(), safe=False)
+
+
+def filtered(request, mode):
+
+    if mode == "Standart" or not User.objects.filter(username=request.user):
+        scores = Scores.objects.filter(custom=False).order_by('-chars_min')
+        mode = "Standart"
+    elif mode == "Custom":
+        scores = Scores.objects.filter(custom=True).order_by('-chars_min')
+    p = Paginator(scores, 10)
+    page = request.GET.get('page')
+    scores = p.get_page(page)
+    start_rank = (scores.number - 1) * scores.paginator.per_page
+
+    return render(request, "type_speed/ranking.html", {
+        'scores': scores,
+        'start_rank': start_rank,
+        "mode": mode
+    })    
+        
+
+def get_rank(request, chars, mode):
+
+    rank = Scores.objects.filter(custom=mode)
+    rank = rank.filter(chars_min__gt=chars).count() + 1
+    return JsonResponse({"rank": rank})

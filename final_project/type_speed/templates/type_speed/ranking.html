@@ -5,7 +5,16 @@
 
     <div id="ranking">
         <ul class="list-group">
-            <li class="list-group-item"><b><h2>Best Scores</h2></b></li>
+            <li class="list-group-item" style="padding: 15px;">
+                <b><h2>Best {{ mode }} Scores</h2></b>
+                {% if user.is_authenticated %}
+                    {% if mode == 'Custom' %}
+                        <a href="{% url 'filtered' mode='Standart' %}" class="btn btn-link" role="button">Standart</a>
+                    {% elif mode == 'Standart' %}
+                    <a href="{% url 'filtered' mode='Custom' %}" class="btn btn-link" role="button">Custom</a>
+                    {% endif %}
+                {% endif %}
+            </li>
             {% for score in scores %}
                 <li class="list-group-item">
                     <b>{{ start_rank|add:forloop.counter }}</b>
