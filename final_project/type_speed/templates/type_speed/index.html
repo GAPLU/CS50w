@@ -39,7 +39,11 @@
       </div>
     </div><br>
     <div id="save-result">
-      <button class="btn btn-primary" id="save-button" style="margin-right: 10px;">Save Result</button>
+      {% if user.is_authenticated %}
+        <button class="btn btn-primary" id="save-button" style="margin-right: 10px;">Save Result</button>
+      {% else %}
+        <button class="btn btn-primary" id="save-button" style="margin-right: 10px; display: none;">Save Result</button>
+      {% endif %}
       <button class="btn btn-primary" id="again-button">Try Again</button>
     </div>
   </div>
